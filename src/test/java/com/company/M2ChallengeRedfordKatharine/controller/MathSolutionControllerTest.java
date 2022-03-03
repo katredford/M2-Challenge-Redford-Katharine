@@ -11,6 +11,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -65,13 +68,11 @@ public class MathSolutionControllerTest {
     @Test
     public void shouldReturn422StatusAdditionInvalid() throws  Exception {
 
-        MathSolution inSolution = new MathSolution();
-        inSolution.setOperand1(1);
-        inSolution.setOperand2(2);
-        inSolution.setOperation("add");
-        inSolution.setAnswer(inSolution.getOperand1() + inSolution.getOperand2());
+        Map<String, String> input = new HashMap<>();
+        input.put("operand1", "2");
+        input.put("operand2", "not a number");
 
-        String inputJson = maps.writeValueAsString(inSolution);
+        String inputJson = maps.writeValueAsString(input);
 
         mockMvc.perform(
                         post("/add")
@@ -117,13 +118,11 @@ public class MathSolutionControllerTest {
     @Test
     public void shouldReturn422StatusSubtractionInvalid() throws  Exception {
 
-        MathSolution inSolution = new MathSolution();
-        inSolution.setOperand1(1);
-        inSolution.setOperand2(2);
-        inSolution.setOperation("subtract");
-        inSolution.setAnswer(inSolution.getOperand1() - inSolution.getOperand2());
+        Map<String, String> input = new HashMap<>();
+        input.put("operand1", "2");
+        input.put("operand2", "not a number");
 
-        String inputJson = maps.writeValueAsString(inSolution);
+        String inputJson = maps.writeValueAsString(input);
 
         mockMvc.perform(
                         post("/subtract")
@@ -168,13 +167,11 @@ public class MathSolutionControllerTest {
     @Test
     public void shouldReturn422StatusMultiplicationInvalid() throws  Exception {
 
-        MathSolution inSolution = new MathSolution();
-        inSolution.setOperand1(1);
-        inSolution.setOperand2(2);
-        inSolution.setOperation("multiply");
-        inSolution.setAnswer(inSolution.getOperand1() * inSolution.getOperand2());
+        Map<String, String> input = new HashMap<>();
+        input.put("operand1", "2");
+        input.put("operand2", "not a number");
 
-        String inputJson = maps.writeValueAsString(inSolution);
+        String inputJson = maps.writeValueAsString(input);
 
         mockMvc.perform(
                         post("/multiply")
@@ -217,13 +214,11 @@ public class MathSolutionControllerTest {
     @Test
     public void shouldReturn422StatusDivisionInvalid() throws  Exception {
 
-        MathSolution inSolution = new MathSolution();
-        inSolution.setOperand1(1);
-        inSolution.setOperand2(2);
-        inSolution.setOperation("divide");
-        inSolution.setAnswer(inSolution.getOperand1() + inSolution.getOperand2());
+        Map<String, String> input = new HashMap<>();
+        input.put("operand1", "2");
+        input.put("operand2", "not a number");
 
-        String inputJson = maps.writeValueAsString(inSolution);
+        String inputJson = maps.writeValueAsString(input);
 
         mockMvc.perform(
                         post("/divide")
@@ -237,12 +232,11 @@ public class MathSolutionControllerTest {
     @Test
     public void shouldReturn422ErrorIfDivideByZero() throws Exception{
 
-        MathSolution inSolution = new MathSolution();
-        inSolution.setOperand1(2);
-        inSolution.setOperand2(0);
+        Map<String, Integer> input = new HashMap<>();
+        input.put("operand1", 1);
+        input.put("operand2", 0);
 
-
-        String inputJson = maps.writeValueAsString(inSolution);
+        String inputJson = maps.writeValueAsString(input);
 
         mockMvc.perform(
                         post("/divide")
@@ -250,8 +244,7 @@ public class MathSolutionControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(print())
-                .andExpect((status().isUnprocessableEntity()));
-
+                .andExpect(status().isUnprocessableEntity());
     }
 
 

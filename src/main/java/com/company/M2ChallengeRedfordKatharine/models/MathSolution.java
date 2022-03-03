@@ -11,7 +11,7 @@ public class MathSolution {
     @NotNull(message = "you must supply an integer for operand 2")
     private Integer operand2;
     private String operation;
-    private int answer;
+    private Integer answer;
 
 
     public MathSolution(){
@@ -53,7 +53,7 @@ public class MathSolution {
         return answer;
     }
 
-    public void setAnswer(int answer) {
+    public void setAnswer(Integer answer) {
         this.answer = answer;
     }
 

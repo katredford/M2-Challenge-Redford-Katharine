@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(MathSolutionControllerTest.class)
+@WebMvcTest(MathSolutionController.class)
 public class MathSolutionControllerTest {
 
     @Autowired
@@ -31,7 +31,6 @@ public class MathSolutionControllerTest {
 
 
     }
-
 
     @Test
     public void shouldReturnSumOfAdditionEndpoint() throws  Exception {
@@ -64,6 +63,28 @@ public class MathSolutionControllerTest {
     }
 
     @Test
+    public void shouldReturn422StatusAdditionInvalid() throws  Exception {
+
+        MathSolution inSolution = new MathSolution();
+        inSolution.setOperand1(1);
+        inSolution.setOperand2(2);
+        inSolution.setOperation("add");
+        inSolution.setAnswer(inSolution.getOperand1() + inSolution.getOperand2());
+
+        String inputJson = maps.writeValueAsString(inSolution);
+
+        mockMvc.perform(
+                        post("/add")
+                                .content(inputJson)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+
+
+    @Test
     public void shouldReturnDifferenceOfSubtractEndpoint() throws  Exception {
 
         MathSolution inSolution = new MathSolution();
@@ -92,6 +113,27 @@ public class MathSolutionControllerTest {
                 .andExpect(content().json(outputJson));
 
     }
+
+    @Test
+    public void shouldReturn422StatusSubtractionInvalid() throws  Exception {
+
+        MathSolution inSolution = new MathSolution();
+        inSolution.setOperand1(1);
+        inSolution.setOperand2(2);
+        inSolution.setOperation("subtract");
+        inSolution.setAnswer(inSolution.getOperand1() - inSolution.getOperand2());
+
+        String inputJson = maps.writeValueAsString(inSolution);
+
+        mockMvc.perform(
+                        post("/subtract")
+                                .content(inputJson)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
 
     @Test
     public void shouldReturnProductOfMultiplyEndpoint() throws  Exception {
@@ -124,6 +166,26 @@ public class MathSolutionControllerTest {
     }
 
     @Test
+    public void shouldReturn422StatusMultiplicationInvalid() throws  Exception {
+
+        MathSolution inSolution = new MathSolution();
+        inSolution.setOperand1(1);
+        inSolution.setOperand2(2);
+        inSolution.setOperation("multiply");
+        inSolution.setAnswer(inSolution.getOperand1() * inSolution.getOperand2());
+
+        String inputJson = maps.writeValueAsString(inSolution);
+
+        mockMvc.perform(
+                        post("/multiply")
+                                .content(inputJson)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
     public void shouldReturnQuotientOfDivideEndpoint() throws  Exception {
 
         MathSolution inSolution = new MathSolution();
@@ -152,17 +214,35 @@ public class MathSolutionControllerTest {
                 .andExpect(content().json(outputJson));
 
     }
+    @Test
+    public void shouldReturn422StatusDivisionInvalid() throws  Exception {
 
+        MathSolution inSolution = new MathSolution();
+        inSolution.setOperand1(1);
+        inSolution.setOperand2(2);
+        inSolution.setOperation("divide");
+        inSolution.setAnswer(inSolution.getOperand1() + inSolution.getOperand2());
+
+        String inputJson = maps.writeValueAsString(inSolution);
+
+        mockMvc.perform(
+                        post("/divide")
+                                .content(inputJson)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
 
     @Test
-    public void shouldReturnErrorIfDivideByZero() throws Exception{
+    public void shouldReturn422ErrorIfDivideByZero() throws Exception{
 
-        MathSolution inputMath = new MathSolution();
-        inputMath.setOperand1(2);
-        inputMath.setOperand2(0);
-        inputMath.setOperation("divide");
+        MathSolution inSolution = new MathSolution();
+        inSolution.setOperand1(2);
+        inSolution.setOperand2(0);
 
-        String inputJson = maps.writeValueAsString(inputMath);
+
+        String inputJson = maps.writeValueAsString(inSolution);
 
         mockMvc.perform(
                         post("/divide")
